@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yayasan ASIH - Satu Hati, Satu Aksi, Indonesia Hebat</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Konfigurasi Font Inter -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+        
+        /* Definisi Warna Primer Yayasan ASIH */
+        .text-red-primary { color: #c00c00; }
+        .bg-red-primary { background-color: #c00c00; }
+        .border-red-primary { border-color: #c00c00; }
+
+        /* Header Styling */
+        .main-header {
+            background-color: #f71212;
+            /* Mengganti ke URL placeholder dengan dimensi 500x500 agar cocok dengan background-size */
+            background-image: url('images/hero.png');
+            
+            /* ---- PERUBAHAN DI SINI ---- */
+            background-size: 1000px 600px; /* Ukuran gambar 500px x 500px */
+            background-repeat: no-repeat; /* Mencegah pengulangan gambar */
+            background-attachment: fixed; 
+            background-position: center; /* Memposisikan gambar di tengah area header */
+
+            /* Mengatur tinggi minimum untuk memastikan konten header tidak lebih tinggi dari 500px + padding */
+            min-height: 1000px; 
+            /* --------------------------- */
+
+            /* Tambahkan overlay untuk kontras teks */
+            position: relative;
+        }
+        /* Penyesuaian background-image untuk Mobile (Max 768px) */
+        @media (max-width: 768px) {
+            .main-header {
+               background-color: #f71212;
+                /* Mengganti ke URL placeholder dengan dimensi 500x500 agar cocok dengan background-size */
+                background-image: url('images/logo-asihh.png');
+                
+                /* ---- PERUBAHAN DI SINI ---- */
+                background-size: 700px 700px; /* Ukuran gambar 500px x 500px */
+                background-repeat: no-repeat; /* Mencegah pengulangan gambar */
+                background-attachment: fixed; 
+                background-position: center; /* Memposisikan gambar di tengah area header */
+
+                /* Mengatur tinggi minimum untuk memastikan konten header tidak lebih tinggi dari 500px + padding */
+                min-height: 800px; 
+                /* --------------------------- */
+
+                /* Tambahkan overlay untuk kontras teks */
+                position: relative;
+            }
+        }
+          @media (max-width: 638px) {
+            .main-header {
+               background-color: #f71212;
+                /* Mengganti ke URL placeholder dengan dimensi 500x500 agar cocok dengan background-size */
+                background-image: url('images/logo-asihh.png');
+                
+                /* ---- PERUBAHAN DI SINI ---- */
+                background-size: 550px 550px; /* Ukuran gambar 500px x 500px */
+                background-repeat: no-repeat; /* Mencegah pengulangan gambar */
+                background-attachment: fixed; 
+                background-position: center; /* Memposisikan gambar di tengah area header */
+
+                /* Mengatur tinggi minimum untuk memastikan konten header tidak lebih tinggi dari 500px + padding */
+                min-height: 800px; 
+                /* --------------------------- */
+
+                /* Tambahkan overlay untuk kontras teks */
+                position: relative;
+            }
+        }
+        .main-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            opacity: 85%; /* Sedikit lebih tinggi dari 80% */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(20, 18, 18, 0.7); /* Menggunakan warna merah primer (c00c0c) dengan transparansi untuk overlay */
+            z-index: 1;
+        }
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Style untuk kartu organisasi */
+        .org-card {
+            @apply bg-white p-4 rounded-xl shadow-lg border border-gray-200 text-center flex flex-col items-center transition duration-300 hover:shadow-xl;
+        }
+
+        /* Styling Bagan Organisasi */
+        .org-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: auto;
+            padding-bottom: 2rem;
+            width: 100%; /* Memastikan kontainer memiliki lebar penuh untuk scroll */
+        }
+
+        /* Style untuk garis vertikal konektor */
+        .v-line {
+            @apply w-0.5 bg-gray-300;
+            height: 2.5rem;
+            margin-top: -1px;
+            margin-bottom: -1px;
+        }
+
+        /* Style untuk garis horizontal kolektif */
+        .h-line-container {
+            @apply relative w-full flex justify-center;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+        .h-line {
+            @apply h-0.5 bg-gray-300 absolute top-1/2 -translate-y-1/2;
+            width: 100%;
+        }
+        .h-line-stub {
+            @apply w-0.5 bg-gray-300 absolute z-10;
+            height: 0.5rem;
+            top: 0;
+        }
+        
+        /* Mengatur tata letak divisi agar rapi di desktop */
+        .divisi-row {
+            @apply flex flex-col md:flex-row justify-center w-full max-w-7xl;
+        }
+        .divisi-item {
+            @apply flex flex-col items-center p-4 md:p-6 w-full md:w-1/4;
+            min-width: 150px;
+        }
+
+        /* Penyesuaian responsif untuk konektor vertikal di mobile */
+        @media (max-width: 768px) {
+            .divisi-row {
+                flex-direction: column;
+                align-items: center;
+                /* Ini penting untuk memastikan elemen di mobile tetap terpusat */
+                width: max-content; 
+                margin: 0 auto;
+            }
+            .divisi-item {
+                width: 100%;
+                max-width: 250px;
+                padding: 1rem 0;
+            }
+            .divisi-item .v-line {
+                height: 1.5rem;
+            }
+            .h-line-container {
+                display: none; /* Hilangkan garis horizontal di mobile */
+            }
+        }
+
+          /* Custom CSS untuk Carousel */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel-slide {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            flex: 0 0 100%; /* Setiap item mengambil 100% lebar slide untuk tampilan awal */
+            padding: 0 8px; /* Padding untuk jarak antar gambar di desktop */
+            box-sizing: border-box;
+        }
+        /* Responsif untuk 2 item per slide pada layar MD */
+        @media (min-width: 768px) {
+            .carousel-item {
+                flex: 0 0 50%;
+            }
+        }
+        /* Responsif untuk 4 item per slide pada layar LG */
+        @media (min-width: 1024px) {
+            .carousel-item {
+                flex: 0 0 25%;
+            }
+        }
+        /* Menyembunyikan tombol navigasi manual */
+        .carousel-button {
+            display: none !important;
+        }
+    </style>
+    <!-- Font Awesome CDN untuk ikon (termasuk ikon merek TikTok) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJzL+S8tJz4T6h4aT+z4pQ4rXj4Z/6g4d/3B3/9c3u/X4T6bA3Z7w1wG9w4B4Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex h-16 items-center justify-between">
+                <a href="#" class="flex items-center gap-3">
+                    <img src="images/logo-asih.png" alt="Logo Yayasan ASIH" class="h-10 w-10 rounded-full ring-2 ring-white/50">
+                    <div class="leading-tight">
+                        <p class="font-extrabold tracking-tight text-slate-900">Yayasan ASIH</p>
+                        <p class="text-xs text-slate-500">Aksi Solidaritas Indonesia Hebat</p>
+                    </div>
+                </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-4">
+                    <!-- Tombol Kembali hanya muncul di halaman struktur -->
+                    <a href="#" id="kembali-ke-home-desktop" class="hidden text-gray-600 hover:text-red-primary px-3 py-2 text-sm font-medium flex items-center">
+                        <i class="fa-solid fa-arrow-left text-sm mr-1"></i> Kembali
+                    </a>
+                    <a href="#tentang" class="nav-link text-gray-600 hover:text-red-primary px-3 py-2 text-sm font-medium">Pengenalan</a>
+                    <a href="#visi-misi" class="nav-link text-gray-600 hover:text-red-primary px-3 py-2 text-sm font-medium">Visi & Misi</a>
+                    <a href="#tujuan" class="nav-link text-gray-600 hover:text-red-primary px-3 py-2 text-sm font-medium">Tujuan</a>
+                    <a href="#kegiatan" class="nav-link text-gray-600 hover:text-red-primary px-3 py-2 text-sm font-medium">Kegiatan</a>
+                    <a href="#pendiri" class="nav-link text-gray-600 hover:text-red-primary px-3 py-2 text-sm font-medium">Pendiri</a>
+                    <a href="#kontak" class="nav-link text-gray-600 hover:text-red-primary px-3 py-2 text-sm font-medium">Kontak</a>
+                    <a href="#donasi" class="nav-link bg-red-primary text-white hover:bg-red-700 rounded-md px-3 py-2 text-sm font-medium transition duration-150 ease-in-out">Donasi</a>
+                </div>
+
+                <!-- Mobile Menu Button (Hamburger) -->
+                <div class="flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-red-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-primary" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Buka menu utama</span>
+                        <!-- Icon open -->
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <!-- Icon close -->
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <a href="#donasi" class="ml-2 bg-red-primary text-white hover:bg-red-700 rounded-md px-3 py-2 text-sm font-medium transition duration-150 ease-in-out flex items-center">Donasi</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" id="kembali-ke-home-mobile" class="hidden text-gray-600 hover:bg-red-50 hover:text-red-primary block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fa-solid fa-arrow-left text-sm mr-2 inline-block"></i> Kembali ke Beranda
+                </a>
+                <a href="#tentang" class="nav-link text-gray-600 hover:bg-red-50 hover:text-red-primary block px-3 py-2 rounded-md text-base font-medium">Pengenalan</a>
+                <a href="#visi-misi" class="nav-link text-gray-600 hover:bg-red-50 hover:text-red-primary block px-3 py-2 rounded-md text-base font-medium">Visi & Misi</a>
+                <a href="#tujuan" class="nav-link text-gray-600 hover:bg-red-50 hover:text-red-primary block px-3 py-2 rounded-md text-base font-medium">Tujuan</a>
+                <a href="#kegiatan" class="nav-link text-gray-600 hover:bg-red-50 hover:text-red-primary block px-3 py-2 rounded-md text-base font-medium">Kegiatan</a>
+                <a href="#pendiri" class="nav-link text-gray-600 hover:bg-red-50 hover:text-red-primary block px-3 py-2 rounded-md text-base font-medium">Pendiri</a>
+                <a href="#kontak" class="nav-link text-gray-600 hover:bg-red-50 hover:text-red-primary block px-3 py-2 rounded-md text-base font-medium">Kontak</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama (Beranda) -->
+    <div id="homepage-content">
+        <!-- Header / Hero Section (dengan Flexbox untuk rata tengah vertikal) -->
+        <header class="main-header flex items-center justify-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 header-content text-center py-16 sm:py-24 lg:py-32">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4">
+                    Bersama Mewujudkan Masyarakat Adil, Makmur, & Berakhlak
+                </h1>
+                <p class="mt-4 text-lg text-white max-w-2xl mx-auto mb-8">
+                    Mendorong solidaritas, pendidikan, dan keadilan melalui program yang terstruktur & berkelanjutan.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-lg text-red-primary bg-white hover:bg-gray-100 transition duration-150 ease-in-out">
+                        Lihat Program
+                    </a>
+                    <a href="#donasi" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-lg text-white bg-red-primary hover:bg-red-700 transition duration-150 ease-in-out">
+                        Dukung Kami
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="tentang" class="py-16 sm:py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="lg:flex lg:items-center lg:space-x-12">
+                        <div class="lg:w-1/2">
+                            <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Yayasan ASIH</h2>
+                            <p class="mt-4 text-lg text-gray-600">
+                                Dibentuk sebagai respon terhadap kebutuhan nyata masyarakat, Yayasan ASIH mempromosikan kesetaraan akses pendidikan, layanan sosial-kesehatan, dan keadilan, berfokus pada pembangunan holistik sosial, spiritual, dan intelektual.
+                            </p>
+                        </div>
+                        <div class="lg:w-1/2 mt-8 lg:mt-0 flex justify-center rounded-xl overflow-hidden shadow-lg">
+                            <!-- MENGGUNAKAN FILE PATH ASLI DENGAN FALLBACK ONERROR -->
+                            <img src="images/hero.jpg" alt="Kegiatan Yayasan ASIH" class="w-full h-auto object-cover" onerror="this.onerror=null; this.src='https://placehold.co/600x400/c00c00/ffffff?text=ASIH+TENTANG'">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="visi-misi" class="py-16 sm:py-24 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+                            <h3 class="text-2xl font-bold text-red-primary mb-4 flex items-center">
+                                <i class="fa-solid fa-eye w-6 h-6 mr-3"></i> Visi
+                            </h3>
+                            <p class="text-gray-600">
+                                Menjadi kolaborator terdepan, terciptanya masyarakat sejahtera yang memiliki daya saing, berakhlak mulia, berpendidikan tinggi, menjunjung nilai solidaritas & kemanusiaan.
+                            </p>
+                        </div>
+                        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+                            <h3 class="text-2xl font-bold text-red-primary mb-4 flex items-center">
+                                <i class="fa-solid fa-bullseye w-6 h-6 mr-3"></i> Misi
+                            </h3>
+                            <ul class="space-y-2 text-gray-600 list-none pl-0">
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check w-5 h-5 text-red-primary mr-2 mt-1 flex-shrink-0"></i>
+                                    Pembudayaan Sosial
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check w-5 h-5 text-red-primary mr-2 mt-1 flex-shrink-0"></i>
+                                    Pembinaan Keagamaan & Spiritual
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check w-5 h-5 text-red-primary mr-2 mt-1 flex-shrink-0"></i>
+                                    Penegakkan Keadilan (bantuan hukum & advokasi)
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check w-5 h-5 text-red-primary mr-2 mt-1 flex-shrink-0"></i>
+                                    Peningkatan Kapasitas Pendidikan
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tujuan" class="py-16 sm:py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-12">Tujuan</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="p-6 bg-gray-50 border-t-4 border-red-primary rounded-xl shadow-md">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-2">Jangka Pendek <span class="text-sm text-gray-500">(1 - 3 Tahun)</span></h4>
+                            <p class="text-gray-600">
+                                Tiga program percepatan sosial, pendidikan, hukum di satu wilayah sasaran.
+                            </p>
+                        </div>
+                        <div class="p-6 bg-gray-50 border-t-4 border-red-primary rounded-xl shadow-md">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-2">Jangka Menengah <span class="text-sm text-gray-500">(3 - 5 Tahun)</span></h4>
+                            <p class="text-gray-600">
+                                Ekspansi ke luar daerah & kemitraan dengan 5-10 lembaga/perusahaan.
+                            </p>
+                        </div>
+                        <div class="p-6 bg-gray-50 border-t-4 border-red-primary rounded-xl shadow-md">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-2">Jangka Panjang <span class="text-sm text-gray-500">(5 - 10 Tahun)</span></h4>
+                            <p class="text-gray-600">
+                                Menjadi rujukan nasional & membangun unit riset/pengembangan mandiri.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="kegiatan" class="py-16 sm:py-24 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-12">Rangkaian Kegiatan</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-primary">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-hand-holding-heart w-6 h-6 text-red-primary mr-2"></i> Sosial & Kemanusiaan
+                            </h3>
+                            <ul class="list-none space-y-2 text-gray-600 text-sm">
+                                <li>- Program "Sehat Peduli"</li>
+                                <li>- Bank Sampah Komunitas</li>
+                                <li>- Donor Darah Rutin</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-primary">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-mosque w-6 h-6 text-red-primary mr-2"></i> Keagamaan & Spiritual
+                            </h3>
+                            <ul class="list-none space-y-2 text-gray-600 text-sm">
+                                <li>- Majelis Ilmu "Cahaya Ilahi"</li>
+                                <li>- Santunan Yatim & Dhuafa</li>
+                                <li>- Gerakan "Jumat Berkah"</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-primary">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-gavel w-6 h-6 text-red-primary mr-2"></i> Pusat Bantuan Hukum
+                            </h3>
+                            <ul class="list-none space-y-2 text-gray-600 text-sm">
+                                <li>- Konsultasi Hukum Gratis</li>
+                                <li>- Edukasi Hak Sipil</li>
+                                <li>- Pendampingan Pro Bono</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-primary">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-graduation-cap w-6 h-6 text-red-primary mr-2"></i> Pendidikan
+                            </h3>
+                            <ul class="list-none space-y-2 text-gray-600 text-sm">
+                                <li>- Beasiswa "Cerdas Berani"</li>
+                                <li>- Kelas Literasi & Vokasi</li>
+                                <li>- "Satu Buku, Satu Harapan"</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-primary">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-layer-group w-6 h-6 text-red-primary mr-2"></i> Lain-lain
+                            </h3>
+                            <ul class="list-none space-y-2 text-gray-600 text-sm">
+                                <li>- Lingkungan "Hijau Negeriku"</li>
+                                <li>- Pameran Produk Lokal</li>
+                                <li>- Forum Diskusi Publik</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+             <!-- Galeri Kegiatan Section (MENGGUNAKAN CAROUSEL AUTO-SCROLL) -->
+    <section id="galeri" class="py-16 md:py-24 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-12">Galeri Kegiatan</h2>
+            
+            <!-- Carousel Container -->
+            <div class="carousel-container relative">
+                <div id="carouselSlide" class="carousel-slide">
+                    <!-- Item 1: Rapat Bisnis -->
+                    <div class="carousel-item">
+                        <img src="images/Rapat dan Diskusi Klien.png" alt="Foto Kegiatan Rapat" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Rapat dan Diskusi Klien</p>
+                    </div>
+                    <!-- Item 2: Pendampingan Klien -->
+                    <div class="carousel-item">
+                        <img src="images/pendampingan.png" alt="Foto Pendampingan Klien" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Pendampingan Hukum Keluarga</p>
+                    </div>
+                    <!-- Item 3: Di Persidangan -->
+                    <div class="carousel-item">
+                        <img src="images/Representasi di Pengadilan.png" alt="Foto di Persidangan" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Representasi di Pengadilan</p>
+                    </div>
+                    <!-- Item 4: Diskusi Hukum -->
+                    <div class="carousel-item">
+                        <img src="images/Konsultasi Hukum Mendalam.png" alt="Foto Diskusi Hukum" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Konsultasi Hukum Mendalam</p>
+                    </div>
+                    <!-- Item 5: Kerjasama PT -->
+                    <div class="carousel-item">
+                        <img src="images/Legal Drafting & Kontrak Bisnis.png" alt="Foto Serah Terima Dokumen PT" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Legal Drafting & Kontrak Bisnis</p>
+                    </div>
+                    <!-- Item 6: Advokasi Sosial -->
+                    <div class="carousel-item">
+                        <img src="images/Kegiatan Pro Bono & Sosial.png" alt="Foto Kegiatan Advokasi Sosial" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Kegiatan Pro Bono & Sosial</p>
+                    </div>
+                    <!-- Item 7: Team Building -->
+                    <div class="carousel-item">
+                        <img src="images/Team Building & Pelestarian Alam.png" alt="Foto Kegiatan Tim 1" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Team Building & Pelestarian Alam</p>
+                    </div>
+                    <!-- Item 8: Kunjungan -->
+                    <div class="carousel-item">
+                        <img src="images/Kunjungan ke Lembaga Hukum.png" alt="Foto Kegiatan Tim 2" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Kunjungan ke Lembaga Hukum</p>
+                    </div>
+                    <!-- Kloning item untuk efek loop tak terbatas -->
+                    <div class="carousel-item clone">
+                        <img src="images/Rapat dan Diskusi Klien.png" alt="Foto Kegiatan Rapat" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Rapat dan Diskusi Klien</p>
+                    </div>
+                    <div class="carousel-item clone">
+                        <img src="images/pendampingan.png" alt="Foto Pendampingan Klien" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Pendampingan Hukum Keluarga</p>
+                    </div>
+                    <div class="carousel-item clone">
+                        <img src="images/Representasi di Pengadilan.png" alt="Foto di Persidangan" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Representasi di Pengadilan</p>
+                    </div>
+                    <div class="carousel-item clone">
+                        <img src="images/Konsultasi Hukum Mendalam.png" alt="Foto Diskusi Hukum" class="w-full h-56 object-cover rounded-lg shadow-md mb-2">
+                        <p class="text-center text-sm text-gray-700 font-medium">Konsultasi Hukum Mendalam</p>
+                    </div>
+                </div>
+
+                <!-- Tombol Navigasi (Dibuat permanen tersembunyi via CSS) -->
+                <button id="prevBtn" class="carousel-button">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <button id="nextBtn" class="carousel-button">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <!-- Akhir Carousel Container -->
+        </div>
+    </section>
+
+            <!-- Section: Para Pendiri -->
+            <section id="pendiri" class="py-16 sm:py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-4">Para Pendiri</h2>
+                    <p class="text-center text-gray-600 mb-12">
+                        Tokoh di balik Yayasan ASIH yang menggerakkan kolaborasi sosial, hukum, dan gizi.
+                    </p>
+
+                    <!-- Tombol yang memicu tampilan struktur -->
+                    <div class="flex justify-center mb-12">
+                        <button id="show-organisasi-button" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-md text-white bg-red-primary hover:bg-red-700 transition duration-150 ease-in-out">
+                            Lihat Struktur Organisasi
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <!-- Pendiri 1 -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition duration-300">
+                            <div class="w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden border-4 border-red-primary">
+                                <!-- MENGGUNAKAN FILE PATH ASLI DENGAN FALLBACK ONERROR -->
+                                <img src="images/founder-1.jpg" alt="Foto Nurudin, SE.,MM" class="object-cover w-full h-full" onerror="this.onerror=null; this.src='https://placehold.co/112x112/c00c00/ffffff?text=NU'">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">Nurudin, SE.,MM</h4>
+                            <p class="text-sm text-red-primary">Pendiri</p>
+                        </div>
+
+                        <!-- Pendiri 2 -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition duration-300">
+                            <div class="w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden border-4 border-red-primary">
+                                <!-- MENGGUNAKAN FILE PATH ASLI DENGAN FALLBACK ONERROR -->
+                                <img src="images/founder-2.jpg" alt="Foto Ahmad Sidik, ST" class="object-cover w-full h-full" onerror="this.onerror=null; this.src='https://placehold.co/112x112/c00c00/ffffff?text=AS'">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">Ahmad Sidik, ST</h4>
+                            <p class="text-sm text-red-primary">Pendiri</p>
+                        </div>
+
+                        <!-- Pendiri 3 -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition duration-300">
+                            <div class="w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden border-4 border-red-primary">
+                                <!-- MENGGUNAKAN FILE PATH ASLI DENGAN FALLBACK ONERROR -->
+                                <img src="images/founder-3.jpg" alt="Foto Wandoyo, S.H.,M.H" class="object-cover w-full h-full" onerror="this.onerror=null; this.src='https://placehold.co/112x112/c00c00/ffffff?text=WH'">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">Wandoyo, S.H.,M.H</h4>
+                            <p class="text-sm text-red-primary">Pendiri</p>
+                        </div>
+                         <!-- Pendiri 4 -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition duration-300">
+                            <div class="w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden border-4 border-red-primary">
+                                <!-- MENGGUNAKAN FILE PATH ASLI DENGAN FALLBACK ONERROR -->
+                                <img src="" alt="Foto Wandoyo, S.H.,M.H" class="object-cover w-full h-full" onerror="this.onerror=null; this.src='https://placehold.co/112x112/c00c00/ffffff?text=AS'">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">Agusalim</h4>
+                            <p class="text-sm text-red-primary">Humas</p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="donasi" class="py-16 sm:py-24 bg-gray-50">
+                <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-4">Donasi</h2>
+                    <p class="text-center text-gray-600 mb-8">
+                        Salurkan donasi Anda ke rekening berikut (sesuaikan nomor rekening nyata):
+                    </p>
+
+                    <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-red-primary">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                                <span class="font-semibold text-gray-700">BANK ABC (A/N Yayasan ASIH)</span>
+                                <span class="text-lg font-bold text-red-primary" id="rekening-1">1234567890</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                                <span class="font-semibold text-gray-700">BANK XYZ (A/N Yayasan ASIH)</span>
+                                <span class="text-lg font-bold text-red-primary" id="rekening-2">0987654321</span>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-center text-sm text-gray-500">
+                            Mohon konfirmasi donasi Anda melalui kontak yang tersedia.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="kontak" class="py-16 sm:py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div>
+                            <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Mari Berkolaborasi</h2>
+                            <p class="text-gray-600 mb-8">
+                                Bergabung sebagai relawan, mitra, atau donatur untuk memperluas dampak program Yayasan ASIH.
+                            </p>
+                            <form onsubmit="event.preventDefault(); alert('Terima kasih! Pesan Anda telah dikirim.');" class="space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <input type="text" name="name" id="name" required placeholder="Nama" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-red-primary focus:border-red-primary">
+                                    <input type="email" name="email" id="email" required placeholder="Email" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-red-primary focus:border-red-primary">
+                                    <button type="submit" class="bg-red-primary text-white font-semibold py-3 rounded-lg hover:bg-red-700 transition duration-150 ease-in-out">
+                                        Kirim
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div>
+                            <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Info Kontak</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-location-dot w-5 h-5 text-red-primary mt-1 flex-shrink-0 mr-3"></i>
+                                    <p class="text-gray-600">Jl. Raya Cipayung No. 1E, Jakarta Timur (Placeholder)</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-phone w-5 h-5 text-red-primary mt-1 flex-shrink-0 mr-3"></i>
+                                    <p class="text-gray-600">0851-1758-6291 (Placeholder)</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-envelope w-5 h-5 text-red-primary mt-1 flex-shrink-0 mr-3"></i>
+                                    <p class="text-gray-600">aksisolidaritasindonesiahebat@gmail.com (Placeholder)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div> <!-- Akhir dari homepage-content -->
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700 pb-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="h-6 w-6 bg-red-primary rounded-full flex items-center justify-center mr-2">
+                            <!-- Icon Hati/Solidaritas -->
+                            <i class="fa-solid fa-hand-holding-heart text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold">Yayasan ASIH</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Aksi Solidaritas Indonesia Hebat</p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Informasi</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-red-primary transition duration-150 ease-in-out">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-red-primary transition duration-150 ease-in-out">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+
+                <!-- Bagian "Ikuti Kami" di Footer (Dibuat rata tengah) -->
+                <div class="text-center"> 
+                    <h4 class="text-lg font-semibold mb-4">Ikuti Kami</h4>
+                    <div class="flex space-x-4 justify-center"> <!-- Ditambahkan justify-center -->
+                        <a href="#" class="text-gray-400 hover:text-red-primary transition duration-150 ease-in-out"><i class="fa-brands fa-facebook-f w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-primary transition duration-150 ease-in-out"><i class="fa-brands fa-instagram w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-primary transition duration-150 ease-in-out"><i class="fa-brands fa-youtube w-6 h-6"></i></a>
+                        <!-- Ikon TikTok yang Diperbarui -->
+                        <a href="#" class="text-gray-400 hover:text-red-primary transition duration-150 ease-in-out"><i class="fa-brands fa-tiktok w-6 h-6"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-gray-400 text-sm">
+                &copy; 2025 Yayasan ASIH. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Social Media Floating Buttons -->
+    <div class="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 space-y-3 hidden sm:block">
+        <a href="#" target="_blank" class="block w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition duration-150 ease-in-out">
+            <!-- Menghapus w-5 h-5 dari ikon untuk memperbaiki alignment -->
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="#" target="_blank" class="block w-10 h-10 bg-pink-600 hover:bg-pink-700 text-white rounded-full shadow-lg flex items-center justify-center transition duration-150 ease-in-out">
+            <!-- Menghapus w-5 h-5 dari ikon untuk memperbaiki alignment -->
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="#" target="_blank" class="block w-10 h-10 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg flex items-center justify-center transition duration-150 ease-in-out">
+            <!-- Menghapus w-5 h-5 dari ikon untuk memperbaiki alignment -->
+            <i class="fa-brands fa-youtube"></i>
+        </a>
+        <!-- Ikon TikTok yang Diperbarui -->
+        <a href="#" target="_blank" class="block w-10 h-10 bg-gray-800 hover:bg-gray-900 text-white rounded-full shadow-lg flex items-center justify-center transition duration-150 ease-in-out">
+            <!-- Menghapus w-5 h-5 dari ikon untuk memperbaiki alignment -->
+            <i class="fa-brands fa-tiktok"></i>
+        </a>
+    </div>
+
+
+    <!-- JavaScript untuk Navigasi -->
+    <script>
+       
+
+        // Logika Mobile Menu (dipertahankan)
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuButton.addEventListener('click', () => {
+            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true' || false;
+            menuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(item => {
+            if (item.classList.contains('nav-link')) {
+                item.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+
+         // --- JavaScript untuk Carousel Galeri Kegiatan (Auto-Scroll Infinite Loop) ---
+        const carouselSlide = document.getElementById('carouselSlide');
+        const items = document.querySelectorAll('.carousel-item:not(.clone)');
+        const totalOriginalItems = items.length;
+        // Menambah item kloning lagi untuk perulangan yang lebih mulus pada layar besar
+        const itemsPerViewToClone = 4; // Kloning maksimal 4 item untuk loop
+        let currentIndex = 0;
+        let itemsPerView = 1;
+        let autoScrollInterval;
+        const autoScrollDelay = 2000; // 4 detik per slide
+
+        function getItemsPerView() {
+            if (window.innerWidth >= 1024) { // Large screens (lg:)
+                return 4;
+            } else if (window.innerWidth >= 768) { // Medium screens (md:)
+                return 2;
+            } else { // Small screens
+                return 1;
+            }
+        }
+
+        function updateCarousel() {
+            const newItemsPerView = getItemsPerView();
+
+            if (itemsPerView !== newItemsPerView) {
+                // Reset currentIndex jika itemsPerView berubah (misalnya saat resize)
+                currentIndex = 0;
+            }
+            itemsPerView = newItemsPerView;
+            
+            // Hitung lebar pergeseran yang diperlukan
+            const itemWidthPercentage = 100 / itemsPerView;
+            
+            // Batas maksimum pergeseran sebelum reset (item asli + item kloning yang diperlukan)
+            // Kita hitung pergerakan sampai item kloning pertama muncul sepenuhnya
+            const maxScrollIndex = totalOriginalItems; 
+
+            // Logika Infinity Loop
+            if (currentIndex >= maxScrollIndex) {
+                // Nonaktifkan transisi sebelum melompat ke posisi reset (index 0)
+                carouselSlide.style.transition = 'none';
+                currentIndex = 0;
+                let offset = currentIndex * itemWidthPercentage;
+                carouselSlide.style.transform = `translateX(-${offset}%)`;
+                
+                // Paksa reflow sebelum mengaktifkan transisi kembali
+                carouselSlide.offsetHeight; 
+                
+                // Aktifkan transisi kembali untuk pergeseran berikutnya
+                carouselSlide.style.transition = 'transform 0.5s ease-in-out';
+            }
+            
+            // Terapkan pergeseran
+            const offset = currentIndex * itemWidthPercentage;
+            carouselSlide.style.transform = `translateX(-${offset}%)`;
+        }
+
+        function autoScrollCarousel() {
+            autoScrollInterval = setInterval(() => {
+                // Pindah ke item berikutnya.
+                currentIndex++;
+                updateCarousel();
+
+            }, autoScrollDelay);
+        }
+
+        // Fungsi untuk menghentikan auto-scroll saat disentuh/hover
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+        
+        // Fungsi untuk memulai auto-scroll
+        function startAutoScroll() {
+            // Kita hanya perlu memulai sekali setelah load
+            autoScrollCarousel();
+        }
+
+        // Menghilangkan fungsi manual click pada tombol karena sudah dihandle oleh CSS display:none.
+        // Menghilangkan juga event listener manual dari tombol.
+
+        // Menambahkan lebih banyak kloning ke DOM agar perulangan lebih mulus, 
+        // terutama saat itemsPerView > 2. Kita kloning 4 item.
+        function cloneItemsForLoop() {
+            const slideContainer = document.getElementById('carouselSlide');
+            const originalItems = document.querySelectorAll('.carousel-item:not(.clone)');
+            
+            // Kloning 4 item pertama
+            for (let i = 0; i < itemsPerViewToClone; i++) {
+                const clone = originalItems[i].cloneNode(true);
+                clone.classList.add('clone');
+                slideContainer.appendChild(clone);
+            }
+        }
+
+        // Hentikan auto-scroll saat user mengarahkan mouse/menyentuh container
+        const carouselContainer = document.querySelector('.carousel-container');
+        carouselContainer.addEventListener('mouseenter', stopAutoScroll);
+        carouselContainer.addEventListener('mouseleave', startAutoScroll);
+        carouselContainer.addEventListener('touchstart', stopAutoScroll);
+        carouselContainer.addEventListener('touchend', startAutoScroll);
+
+
+        // Update carousel pada saat load dan resize window
+        window.addEventListener('load', () => {
+             cloneItemsForLoop(); // Pastikan kloning sudah ada
+             updateCarousel();
+             startAutoScroll(); // Memulai auto-scroll saat halaman dimuat
+        });
+        window.addEventListener('resize', updateCarousel);
+    </script>
+</body>
+</html>
